@@ -67,3 +67,17 @@ fn main() {
         });
     });
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_apply_operation() {
+        assert_eq!(Ok(5), apply_operation(2,3,'+'));
+        assert_eq!(Ok(-1), apply_operation(2,3,'-'));
+        assert_eq!(Ok(6), apply_operation(2,3,'*'));
+        assert_eq!(Ok(2), apply_operation(6,3,'/'));
+        assert_eq!(Err(-1), apply_operation(6,4,'/'));
+    }
+}
