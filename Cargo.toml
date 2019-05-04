@@ -1,0 +1,9 @@
+[package]
+name = "util24"
+version = "0.1.0"
+authors = ["Jie Yang <jie.yang@nanchao.org>"]
+edition = "2018"
+
+[dependencies]
+permutator="0.3.2"
+scan_fmt="0.1.3"
