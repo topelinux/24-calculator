@@ -2,7 +2,7 @@ extern crate permutator;
 
 #[macro_use] extern crate scan_fmt;
 //use permutator::{CartesianProduct, Combination, Permutation};
-use permutator::copy::{CartesianProduct, Combination, Permutation};
+use permutator::copy::{CartesianProduct, Permutation};
 use std::io;
 
 fn gen_opers(operation: &[char]) -> Vec<Vec<char>> {
@@ -16,17 +16,17 @@ fn gen_opers(operation: &[char]) -> Vec<Vec<char>> {
     ret
 }
 
-fn apply_operation(a: i32, b: i32, o: char) -> i32 {
+fn apply_operation(a: i32, b: i32, o: char) -> Result<i32, i32> {
     match o {
-        '+' => a + b,
-        '-' => a - b,
-        '*' => a * b,
+        '+' => Ok(a + b),
+        '-' => Ok(a - b),
+        '*' => Ok(a * b),
         '/' => {
             let c = a / b;
             if c * b == a {
-                c
+                Ok(c)
             } else {
-                -1
+                Err(-1)
             }
         },
         _ =>  panic!("oh no!"),
@@ -39,9 +39,9 @@ fn apply_to_array(item: &[i32], operation: Vec<char>) {
     let iter = item.iter().skip(1);
 
     iter.enumerate().for_each(|(index, &item)| {
-        ret = apply_operation(ret, item, operation[index]);
-        if ret == -1 {
-            valid = false;
+        match apply_operation(ret, item, operation[index]) {
+            Err(_) => valid = false,
+            Ok(r) => ret = r,
         }
     });
     if valid && (ret == 24 || ret == -24) {
