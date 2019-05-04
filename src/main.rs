@@ -34,18 +34,16 @@ fn apply_operation(a: i32, b: i32, o: char) -> Result<i32, i32> {
 }
 
 fn apply_to_array(item: &[i32], operation: Vec<char>) {
-    let mut ret = item[0];
-    let mut valid = true;
-    let iter = item.iter().skip(1);
+    let acc = item[0];
+    let nums = item.iter().skip(1);
 
-    iter.enumerate().for_each(|(index, &item)| {
-        match apply_operation(ret, item, operation[index]) {
-            Err(_) => valid = false,
-            Ok(r) => ret = r,
-        }
+    let ret = nums.enumerate().try_fold(acc, |acc, (index, &item)| {
+        apply_operation(acc, item, operation[index])
     });
-    if valid && (ret == 24 || ret == -24) {
-        println!("Found! {:?} {:?}", item, operation);
+    if let Ok(sum)  = ret {
+        if sum == 24 || sum == -24 {
+            println!("{:?} => {:?}", item, operation);
+        }
     }
 }
 
