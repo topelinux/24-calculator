@@ -1,4 +1,4 @@
-# 24 util
+# 24-calculator
 
 Just show the caculate solution for 24 with 4 input nums.
 
